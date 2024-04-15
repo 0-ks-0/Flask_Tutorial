@@ -1,132 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/header.css') }}">
-    <title>My site</title>
-  </head>
+	<head>
+		<meta charset="utf-8">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/style.css') }}">
+		<title>Boats</title>
+	</head>
 
-  <body>
-    <header>
-      <div class="topBar">
-        <div class="">
-          <img src="{{url_for('static',filename = 'images/logo.jpg')}}" alt="Logo" class="logo">
-          <ul class="barItem">
+	<body>
+		<header>
+			<div class="topBar">
+				<div class="navbar">
+					<img src="{{ url_for('static', filename = 'images/logo.jpg') }}" alt="Logo" class="logo">
 
-            <li><a href="/">HOME</a></li>
-            <li>SERVICES</li>
-            <li>ABOUT</li>
-            <li>CONTACT</li>
-          </ul>
-        </div>
+					<ul class="navbar_links">
+						<li><a href="/">Home</a></li>
+						<li><a href="/boats">View Boats</a></li>
+						<li><a href="/manage">Manage Boats</a></li>
+					</ul>
+				</div>
 
-        <div class="formSection barItem">
-          <form class="barItem" action="" method="post">
-            <input type="text" name="uid" value="" placeholder="E-mail" required>
-            <input type="password" name="pass" value="" placeholder="Password" required>
-            <input type="submit" name="loginButton" value="LOGIN">
-          </form>
+			</div>
+		</header>
 
-          <button class="barItem input" style="margin-left:10px;">
-            <a href="#">SIGNUP</a>
-          </button>
-        </div>
+		{% block body %}
+		{% endblock %}
 
-      </div>
-    </header>
+		<footer class="footer">
+			<div class="footer_address">
+				<h1 class="footer_logo">A very cool looking footer!</h1>
 
-    {% block body %}
-    {% endblock %}
-    
-    <footer class="footer">
-      <div class="footer__addr">
-        <h1 class="footer__logo">A very cool looking footer!</h1>
+				<h2>Contact</h2>
 
-        <h2>Contact</h2>
+				<address>
+					5534 Somewhere In. The World 22193-10212<br>
 
-        <address>
-          5534 Somewhere In. The World 22193-10212<br>
+					<a class="footer_btn" href="mailto:example@gmail.com">Email Us</a>
+				</address>
+			</div>
 
-          <a class="footer__btn" href="mailto:example@gmail.com">Email Us</a>
-        </address>
-      </div>
+			<ul class="footer__nav">
+				<li class="nav_item">
+					<h2 class="nav_title">Legal</h2>
 
-      <ul class="footer__nav">
-        <li class="nav__item">
-          <h2 class="nav__title">Media</h2>
+					<ul class="nav_ul">
+						<li>
+							<a href="#">Privacy Policy</a>
+						</li>
 
-          <ul class="nav__ul">
-            <li>
-              <a href="#">Online</a>
-            </li>
+						<li>
+							<a href="#">Terms of Use</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
 
-            <li>
-              <a href="#">Print</a>
-            </li>
+			<div class="legal">
+				<p>&copy; 2024 Something. All rights reserved.</p>
+				<p>Boat logo by <a href="https://www.freepik.com/free-vector/hand-drawn-boat-logo_41275485.htm#query=boat%20logo&position=21&from_view=keyword&track=ais&uuid=10973766-1269-4efb-8462-73b70c4056cf">Freepik</a></p>
+			</div>
+		</footer>
 
-            <li>
-              <a href="#">Alternative Ads</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav__item nav__item--extra">
-          <h2 class="nav__title">Technology</h2>
-
-          <ul class="nav__ul nav__ul--extra">
-            <li>
-              <a href="#">Hardware Design</a>
-            </li>
-
-            <li>
-              <a href="#">Software Design</a>
-            </li>
-
-            <li>
-              <a href="#">Digital Signage</a>
-            </li>
-
-            <li>
-              <a href="#">Automation</a>
-            </li>
-
-            <li>
-              <a href="#">Artificial Intelligence</a>
-            </li>
-
-            <li>
-              <a href="#">IoT</a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav__item">
-          <h2 class="nav__title">Legal</h2>
-
-          <ul class="nav__ul">
-            <li>
-              <a href="#">Privacy Policy</a>
-            </li>
-
-            <li>
-              <a href="#">Terms of Use</a>
-            </li>
-
-            <li>
-              <a href="#">Sitemap</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-
-      <div class="legal">
-        <p>&copy; 2019 Something. All rights reserved.</p>
-
-        <div class="legal__links">
-          <span>Made with <span class="heart">♥</span> remotely from Anywhere</span>
-        </div>
-      </div>
-    </footer>
-
-  </body>
+	</body>
 </html>
