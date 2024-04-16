@@ -10,6 +10,7 @@
 
         <div class="pagination_bar">
             {% if page > 1 %}
+                <a href="{{ "/boats/1" }}" class="pagination_button">First</a>
                 <a href= "{{ "/boats/"+ (page - 1) | string }}" class="pagination_button"> < </a>
             {% endif %}
 
@@ -22,11 +23,9 @@
             {% if page < max_page  %}
                 <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> {{ page + 1 }} </a>
                 <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> > </a>
-
+                <a href="{{ "/boats/" + max_page | string }}" class="pagination_button">Last</a>
              {% endif %}
 
-            {% if page < max_page %}
-            {% endif %}
         </div>
 
         <div class="grid">
