@@ -8,13 +8,11 @@ engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
 
-# render a file
 @app.route('/')
 def index():
 	return render_template('index.html')
 
-# get all boats
-# this is done to handle requests for two routes
+# View boats
 @app.route('/boats/')
 @app.route('/boats/<page>')
 def get_boats(page = 1):
@@ -26,10 +24,19 @@ def get_boats(page = 1):
 
 	return render_template('boats.html', boats = boats, page = page, per_page = per_page, max_page = max_page)
 
+# View data for boat
+@app.route('/boats/view/<id>')
+def get_boat_data(id = 1):
+	data = conn.execute(text(f"select name, type, owner_id, rental_price from boats where id = {id}")).first()
+
+	return render_template('boat_info.html', boat = data)
+
+# Manage page
 @app.route('/manage/')
 def navigate_to_manage():
 	return render_template('manage.html')
 
+# Create boat
 @app.route('/manage/create/', methods=['GET'])
 def create_get_request():
 	return render_template('boats_create.html')
