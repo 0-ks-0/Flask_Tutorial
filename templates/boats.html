@@ -32,13 +32,7 @@
             {% for boat in boats %}
                 <div class="boat">
                     <ul>
-                        <li class="boat_btn">Boat #{{ boat['id'] }}</li>
-                        <!-- <ul>
-                            <li>Name: {{ boat['name'] }}</li>
-                            <li>Type: {{ boat['type'] }}</li>
-                            <li>Owner ID: {{ boat['owner_id'] }}</li>
-                            <li>Price: {{ boat['rental_price'] }}</li>
-                        </ul> -->
+                        <a href="{{ "/boats/view/" + boat['id'] | string }}"><li class="boat_btn">Boat #{{ boat['id'] }}</li></a>
                     </ul>
                 </div>
             {% endfor %}
