@@ -35,6 +35,8 @@
 	display: flex;
 	justify-content: center;
 
+	gap: 8px;
+
 	margin: 0 auto;
 }
 
@@ -46,15 +48,15 @@
 	color: white;
 
 	border: none;
+	border-radius: 10px;
 
-	padding: 2px 2px 4px;
+	padding: 2px 16px;
 
 	text-align: center;
 	text-decoration: none;
 
 	display: inline-block;
 
-	width: 30px;
 }
 
 .pagination_button:hover
@@ -105,7 +107,7 @@
 
 	padding: 1rem;
 
-	border-radius: 1rem;
+	border-radius: var(--button_border_radius);
 }
 
 .boat_btn:hover

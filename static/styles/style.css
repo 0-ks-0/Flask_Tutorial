@@ -2,6 +2,8 @@
 {
 	--button_orange: #d77a0e;
 	--button_orange_hover: #ffa32b;
+
+	--button_border_radius: 1rem;
 }
 
 *
@@ -189,7 +191,7 @@ h1
 
 	background-color: var(--button_orange);
 
-	border-radius: 100px;
+	border-radius: var(--button_border_radius);
 
 	line-height: 0;
 
