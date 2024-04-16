@@ -8,26 +8,6 @@
     <div class="column">
         <h3>Page {{ page }}</h3>
 
-        <div class="grid">
-            {% for boat in boats %}
-                <div class="boat">
-                    <ul>
-                        <li class="boat_btn">Boat #{{ boat['id'] }}</li>
-                        <!-- <ul>
-                            <li>Name: {{ boat['name'] }}</li>
-                            <li>Type: {{ boat['type'] }}</li>
-                            <li>Owner ID: {{ boat['owner_id'] }}</li>
-                            <li>Price: {{ boat['rental_price'] }}</li>
-                        </ul> -->
-                    </ul>
-                </div>
-            {% endfor %}
-
-            {% if boats | length < 1 %}
-                <h1>No data available</h1>
-            {% endif %}
-        </div>
-
         <div class="pagination_bar">
             {% if page > 1 %}
                 <a href= "{{ "/boats/view/"+ (page - 1) | string }}" class="pagination_button"> < </a>
@@ -45,6 +25,26 @@
 
             {% if page < max_page %}
                 <a href="{{ "/boats/view/"+ (page + 1) | string }}" class="pagination_button"> > </a>
+            {% endif %}
+        </div>
+
+        <div class="grid">
+            {% for boat in boats %}
+                <div class="boat">
+                    <ul>
+                        <li class="boat_btn">Boat #{{ boat['id'] }}</li>
+                        <!-- <ul>
+                            <li>Name: {{ boat['name'] }}</li>
+                            <li>Type: {{ boat['type'] }}</li>
+                            <li>Owner ID: {{ boat['owner_id'] }}</li>
+                            <li>Price: {{ boat['rental_price'] }}</li>
+                        </ul> -->
+                    </ul>
+                </div>
+            {% endfor %}
+
+            {% if boats | length < 1 %}
+                <h1>No data available</h1>
             {% endif %}
         </div>
     </div>

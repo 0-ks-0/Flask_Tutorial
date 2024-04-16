@@ -22,43 +22,14 @@
 	padding-top: 20px;
 }
 
-.grid
+.column h3
 {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-
-	font-size: 1.2rem;
-	text-align: center;
-
-	width: 100%;
-
-	margin: auto;
+	margin-bottom: 10px;
 }
 
-.boat
-{
-	padding: 10px;
-}
-
-.boat ul
-{
-	list-style-type: none;
-}
-
-.boat_btn
-{
-	background-color: var(--button_orange);
-
-	padding: 1rem;
-
-	border-radius: 1rem;
-}
-
-.boat_btn:hover
-{
-	background-color: var(--button_orange_hover);
-}
-
+/*
+*	Pagination bar
+*/
 .pagination_bar
 {
 	display: flex;
@@ -99,4 +70,44 @@
 .current_pag_btn:hover
 {
 	background-color: #353b35;
+}
+
+/*
+*	Boats display
+*/
+.grid
+{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+
+	font-size: 1.2rem;
+	text-align: center;
+
+	width: 100%;
+
+	margin: auto;
+}
+
+.boat
+{
+	padding: 10px;
+}
+
+.boat ul
+{
+	list-style-type: none;
+}
+
+.boat_btn
+{
+	background-color: var(--button_orange);
+
+	padding: 1rem;
+
+	border-radius: 1rem;
+}
+
+.boat_btn:hover
+{
+	background-color: var(--button_orange_hover);
 }
