@@ -14,8 +14,8 @@ def index():
 
 # get all boats
 # this is done to handle requests for two routes
-@app.route('/boats/view')
-@app.route('/boats/view/<page>')
+@app.route('/boats/')
+@app.route('/boats/<page>')
 def get_boats(page = 1):
 	page = 1 if int(page) < 1 else int(page)  # request params always come as strings. So type conversion is necessary.
 	per_page = 10  # records to show per page
@@ -25,15 +25,15 @@ def get_boats(page = 1):
 
 	return render_template('boats.html', boats = boats, page = page, per_page = per_page, max_page = max_page)
 
-@app.route('/manage')
+@app.route('/manage/')
 def navigate_to_manage():
 	return render_template('manage.html')
 
-@app.route('/manage/create', methods=['GET'])
+@app.route('/manage/create/', methods=['GET'])
 def create_get_request():
 	return render_template('boats_create.html')
 
-@app.route('/manage/create', methods=['POST'])
+@app.route('/manage/create/', methods=['POST'])
 def create_boat():
 	# you can access the values with request.from.name
 	# this name is the value of the name attribute in HTML form's input element
