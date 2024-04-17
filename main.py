@@ -27,7 +27,7 @@ def get_boats(page = 1):
 # View data for boat
 @app.route('/boats/view/<id>')
 def get_boat_data(id = 1):
-	data = conn.execute(text(f"select name, type, owner_id, rental_price from boats where id = {id}")).first()
+	data = conn.execute(text(f"select * from boats where id = {id}")).first()
 
 	return render_template('boat_info.html', boat = data)
 
@@ -37,21 +37,25 @@ def navigate_to_manage():
 	return render_template('manage.html')
 
 # Create boat
-@app.route('/manage/create/', methods=['GET'])
+@app.route('/manage/add/', methods=['GET'])
 def create_get_request():
 	return render_template('boats_create.html')
 
-@app.route('/manage/create/', methods=['POST'])
+@app.route('/manage/add/', methods=['POST'])
 def create_boat():
 	# you can access the values with request.from.name
 	# this name is the value of the name attribute in HTML form's input element
 	# ex: print(request.form['id'])
+
+	id = conn.execute(text(f"select max(id) + 1 from boats")).first()[0]
+
 	try:
 		conn.execute(
-			text("INSERT INTO boats values (:id, :name, :type, :owner_id, :rental_price)"),
+			text(f"insert into boats values ({id}, :name, :type, :owner_id, :rental_price)"),
 			request.form
 		)
 		return render_template('boats_create.html', error=None, success="Data inserted successfully!")
+
 	except Exception as e:
 		error = e.orig.args[1]
 		print(error)
