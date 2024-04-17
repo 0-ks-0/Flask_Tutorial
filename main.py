@@ -8,13 +8,13 @@ engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
 
-@app.route('/')
+@app.route("/")
 def index():
-	return render_template('index.html')
+	return render_template("index.html")
 
 # View boats
-@app.route('/boats/')
-@app.route('/boats/<page>')
+@app.route("/boats/")
+@app.route("/boats/<page>")
 def get_boats(page = 1):
 	page = 1 if int(page) < 1 else int(page)  # request params always come as strings. So type conversion is necessary.
 	per_page = 10  # records to show per page
@@ -22,30 +22,30 @@ def get_boats(page = 1):
 
 	boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
 
-	return render_template('boats.html', boats = boats, page = page, per_page = per_page, max_page = max_page)
+	return render_template("boats.html", boats = boats, page = page, per_page = per_page, max_page = max_page)
 
 # View data for boat
-@app.route('/boats/view/<id>')
+@app.route("/boats/view/<id>")
 def get_boat_data(id = 1):
 	data = conn.execute(text(f"select * from boats where id = {id}")).first()
 
-	return render_template('boat_info.html', boat = data)
+	return render_template("boat_info.html", boat = data)
 
 # Manage page
-@app.route('/manage/')
+@app.route("/manage/")
 def navigate_to_manage():
-	return render_template('manage.html')
+	return render_template("manage.html")
 
 # Create boat
-@app.route('/manage/add/', methods=['GET'])
+@app.route("/manage/add/", methods=["GET"])
 def create_get_request():
-	return render_template('boats_create.html')
+	return render_template("boats_create.html")
 
-@app.route('/manage/add/', methods=['POST'])
+@app.route("/manage/add/", methods=["POST"])
 def create_boat():
 	# you can access the values with request.from.name
-	# this name is the value of the name attribute in HTML form's input element
-	# ex: print(request.form['id'])
+	# this name is the value of the name attribute in HTML form"s input element
+	# ex: print(request.form["id"])
 
 	id = conn.execute(text(f"select max(id) + 1 from boats")).first()[0]
 
@@ -54,13 +54,61 @@ def create_boat():
 			text(f"insert into boats values ({id}, :name, :type, :owner_id, :rental_price)"),
 			request.form
 		)
-		return render_template('boats_create.html', error=None, success="Data inserted successfully!")
+		return render_template("boats_create.html", error=None, success="Data inserted successfully!")
 
+	except:
+		return render_template("boats_create.html", error= "Data could not be inserted", success=None)
+
+# Delete boat
+@app.route("/manage/delete/", methods=["GET"])
+def create_delete_boat():
+	return render_template("boats_delete.html")
+
+@app.route("/manage/delete/", methods=["POST"])
+def delete_boat():
+	try:
+		id = conn.execute(
+			text(f"select id from boats where id = :id"),
+			request.form
+		).first()
+
+		if id == None:
+			return render_template("boat_delete.html", error = "No data found", success = None)
+
+		conn.execute(
+			text(f"delete from boats where id = :id"),
+			request.form
+		)
+
+		return render_template("boats_delete.html", error = None, success = "Data deleted successfully!")
+	except:
+		return render_template("boats_delete.html", error = "Boat not found", success = None)
+
+# Update boat
+@app.route("/manage/update/", methods=["GET"])
+def create_update_boat():
+	return render_template("boats_update.html")
+
+@app.route("/manage/update/", methods=["POST"])
+def update_boat():
+	try:
+		id = conn.execute(
+			text(f"select id from boats where id = :id"),
+			request.form
+		).first()
+
+		if id == None:
+			return render_template("boats_update.html", error = "No data found", success = None)
+
+		conn.execute(
+			text("update boats set name = :name, type = :type, owner_id = :owner_id, rental_price = :rental_price where id = :id"),
+			request.form
+		)
+
+		return render_template("boats_update.html", error = None, success = "Data updated successfully!")
 	except Exception as e:
-		error = e.orig.args[1]
-		print(error)
-		return render_template('boats_create.html', error=error, success=None)
+		print(e)
+		return render_template("boats_update.html", error = "Boat not found", success = None)
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
 	app.run(debug=True)

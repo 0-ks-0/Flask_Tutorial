@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/boats_view.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="styles/boats_view.css") }}">
 {% endblock %}
 
 {% block body %}
@@ -8,23 +8,23 @@
 		<table>
 			<tr>
 				<td>Boat ID:</td>
-				<td>{{ boat['id'] }}</td>
+				<td>{{ boat["id"] }}</td>
 			</tr>
 			<tr>
 				<td>Name:</td>
-				<td>{{ boat['name'] }}</td>
+				<td>{{ boat["name"] }}</td>
 			</tr>
 			<tr>
 				<td>Type:</td>
-				<td>{{ boat['type'] }}</td>
+				<td>{{ boat["type"] }}</td>
 			</tr>
 			<tr>
 				<td>Owner ID:</td>
-				<td>{{ boat['owner_id'] }}</td>
+				<td>{{ boat["owner_id"] }}</td>
 			</tr>
 			<tr>
 				<td>Rental Price:</td>
-				<td>{{ "$%.2f"|format(boat['rental_price']) }}</td>
+				<td>{{ "$%.2f"|format(boat["rental_price"]) }}</td>
 			</tr>
 		</table>
 	</div>

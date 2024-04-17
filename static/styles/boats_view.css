@@ -144,3 +144,47 @@
 {
 	text-align: right;
 }
+
+/*
+*	Add / Delete / Update
+*/
+.body
+{
+	margin: auto;
+}
+.input_field
+{
+	width: 100%;
+
+	padding: 12px 20px;
+
+	margin: 8px 0;
+
+	display: inline-block;
+
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.input_submit
+{
+	width: 100%;
+
+	background-color: var(--button_orange);
+
+	color: white;
+
+	padding: 14px 20px;
+
+	margin: 8px 0;
+
+	border: none;
+	border-radius: 4px;
+
+	cursor: pointer;
+}
+
+.input_submit:hover
+{
+	background-color: var(--button_orange_hover);
+}

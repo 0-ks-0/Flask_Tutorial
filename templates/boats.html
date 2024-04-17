@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/boats_view.css') }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="styles/boats_view.css") }}">
 {% endblock %}
 
 {% block body %}
@@ -32,7 +32,7 @@
             {% for boat in boats %}
                 <div class="boat">
                     <ul>
-                        <a href="{{ "/boats/view/" + boat['id'] | string }}"><li class="boat_btn">Boat #{{ boat['id'] }}</li></a>
+                        <a href="{{ "/boats/view/" + boat["id"] | string }}"><li class="boat_btn">Boat #{{ boat["id"] }}</li></a>
                     </ul>
                 </div>
             {% endfor %}

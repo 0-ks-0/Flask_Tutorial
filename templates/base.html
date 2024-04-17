@@ -5,8 +5,8 @@
 		<title>Boats</title>
 
 
-		<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename = 'favicon.ico') }}">
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static', filename='styles/style.css') }}">
+		<link rel="icon" type="image/x-icon" href="{{ url_for("static", filename = "favicon.ico") }}">
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for("static", filename="styles/style.css") }}">
 
 		{% block head %}
 		{% endblock %}
@@ -16,7 +16,7 @@
 		<header>
 			<div class="topBar">
 				<div class="navbar">
-					<img src="{{ url_for('static', filename = 'images/logo.jpg') }}" alt="Logo" class="logo">
+					<img src="{{ url_for("static", filename = "images/logo.jpg") }}" alt="Logo" class="logo">
 
 					<ul class="navbar_links">
 						<li><a href="/">Home</a></li>
