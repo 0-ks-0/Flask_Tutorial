@@ -16,8 +16,8 @@ def index():
 @app.route("/boats/")
 @app.route("/boats/<page>")
 def get_boats(page = 1):
-	page = 1 if int(page) < 1 else int(page)  # request params always come as strings. So type conversion is necessary.
-	per_page = 10  # records to show per page
+	page = 1 if int(page) < 1 else int(page)
+	per_page = 10  # num of records to show per page
 	max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
 
 	boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
@@ -43,10 +43,6 @@ def create_get_request():
 
 @app.route("/manage/add/", methods=["POST"])
 def create_boat():
-	# you can access the values with request.from.name
-	# this name is the value of the name attribute in HTML form"s input element
-	# ex: print(request.form["id"])
-
 	id = conn.execute(text(f"select max(id) + 1 from boats")).first()[0]
 
 	try:

@@ -101,6 +101,11 @@
 	list-style-type: none;
 }
 
+.boat a
+{
+	text-decoration: none;
+}
+
 .boat_btn
 {
 	background-color: var(--button_orange);
