@@ -4,8 +4,19 @@
 {% endblock %}
 
 {% block body %}
-    {% set prev_page = page - 1 %}  <!-- variables in jinja --->
+    {% set prev_page = page - 1 %}
     <div class="column">
+        <form action="/boats/1" method="POST">
+            <select name="search_type" id="">
+                <option value="id">ID</option>
+                <option value="name">Owner Name</option>
+                <option value="type">Type</option>
+            </select>
+
+            <input type="text" name="search_value" placeholder="Enter value" class="form_input_field">
+            <input type="submit" class="form_submit_btn" value="Search">
+        </form>
+
         <h3>Page {{ page }}</h3>
 
         <div class="pagination_bar">

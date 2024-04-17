@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from sqlalchemy import Column, Integer, String, Numeric, create_engine, text
 from math import ceil
 
@@ -12,20 +12,39 @@ conn = engine.connect()
 def index():
 	return render_template("index.html")
 
-# View boats
-@app.route("/boats/")
-@app.route("/boats/<page>")
+# View boats and search
+@app.route("/boats/", methods=["GET"])
+@app.route("/boats/<page>", methods=["GET", "POST"])
 def get_boats(page = 1):
 	page = 1 if int(page) < 1 else int(page)
 	per_page = 10  # num of records to show per page
-	max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
+	max_page = 0
+	boats = None
 
-	boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+	if request.method == "POST":
+		type = request.form["search_type"]
+		value = request.form["search_value"]
+
+		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
+
+		if not value:
+			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+
+			return render_template("boats.html", boats = boats, page = page, per_page = per_page, max_page = max_page)
+
+		value = int(value) if value.isnumeric() else f"'{value}'"
+
+		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
+
+		boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+
+	else:
+		boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
 
 	return render_template("boats.html", boats = boats, page = page, per_page = per_page, max_page = max_page)
 
 # View data for boat
-@app.route("/boats/view/<id>")
+@app.route("/boats/view/<id>", methods=["GET"])
 def get_boat_data(id = 1):
 	data = conn.execute(text(f"select * from boats where id = {id}")).first()
 
