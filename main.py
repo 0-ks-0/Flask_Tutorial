@@ -32,10 +32,10 @@ def get_boats():
 
 	if request.method == "POST":
 		type = request.form.get("search_type")
-		value = request.form.get("search_value")
+		val = request.form.get("search_value")
 
 		# Returning back to all the boats
-		if not value:
+		if not val:
 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
 
 			return render_template(
@@ -47,31 +47,37 @@ def get_boats():
 				type = type,
 				value = ""
 			)
+		if type == "ID" and not val.isnumeric(): return
 
-		value = int(value) if value.isnumeric() else f"'{value}'"
+		val = int(val) if val.isnumeric() else f"'{val}'"
 
-		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
+		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {val}")).first()[0])
 
-		boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+		boats = conn.execute(text(f"select * from boats where {type} = {val} limit {per_page} offset {(page - 1) * per_page}")).all()
 
+		if isinstance(val, str):
+			val = val[1:-1]
 	# GET
 	else:
 		type = request.args.get("search_type")
-		value = request.args.get("search_value")
+		val = request.args.get("search_value")
 
 		# '/boats/
-		if not type and not value:
+		if not val:
 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
 
-			value = ""
+			val = ""
 
 		# With search parameters
 		else:
-			value = int(value) if value.isnumeric() else f"'{value}'"
+			val = int(val) if val.isnumeric() else f"'{val}'"
 
-			max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
+			max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {val}")).first()[0])
 
-			boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+			boats = conn.execute(text(f"select * from boats where {type} = {val} limit {per_page} offset {(page - 1) * per_page}")).all()
+
+			if isinstance(val, str):
+				val = val[1:-1]
 
 
 	return render_template(
@@ -81,58 +87,8 @@ def get_boats():
 		per_page = per_page,
 		max_page = max_page,
 		type = type,
-		value = value[1:-1]
+		value = val
 	)
-
-
-# @app.route("/boats/")
-# def get_boats():
-# 	page = 1 if int(page) < 1 else int(page)
-# 	per_page = 10  # num of records to show per page
-# 	max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
-# 	boats = None
-
-# 	if request.method == "POST":
-# 		type = request.form.get("search_type")
-# 		value = request.form.get("search_value")
-
-# 		# Returning back to all the boats
-# 		if not value:
-# 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
-
-# 			return render_template(
-# 				"boats.html",
-# 				boats = boats,
-# 				page = page,
-# 				per_page = per_page,
-# 				max_page = max_page,
-# 				type = type,
-# 				value = ""
-# 			)
-
-# 		value = int(value) if value.isnumeric() else f"'{value}'"
-
-# 		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
-
-# 		boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
-
-# 	else:
-# 		print("akljfhkdjfhasdjkhlfd")
-# 		print(type, value)
-# 		if not type and not value:
-# 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
-# 		else:
-# 			boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
-
-# 	return render_template(
-# 		"boats.html",
-# 		boats = boats,
-# 		page = page,
-# 		per_page = per_page,
-# 		max_page = max_page,
-# 		type = type,
-# 		value = value[1:-1]
-# 	)
 
 # View data for boat
 @app.route("/boats/view/<id>", methods=["GET"])
