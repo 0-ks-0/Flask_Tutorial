@@ -152,12 +152,36 @@
 }
 
 /*
+*	Manage page
+*/
+.container
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	gap: 1rem;
+}
+.manage_btn
+{
+	background-color: var(--button_orange);
+
+	padding: 1rem;
+
+	border-radius: var(--button_border_radius);
+
+	text-decoration: none;
+}
+
+/*
 *	Add / Delete / Update
 */
 .body
 {
 	margin: auto;
 }
+
 .input_field
 {
 	width: 100%;

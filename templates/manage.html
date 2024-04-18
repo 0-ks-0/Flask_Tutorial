@@ -1,8 +1,12 @@
 {% extends "base.html" %}
+{% block head %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='/styles/boats_view.css') }}">
+{% endblock %}
+
 {% block body %}
-	<div class="container flex_column">
-		<a href="{{ "/manage/add/" }}">Add Boat</a>
-		<a href="{{ "/manage/delete/" }}">Delete Boat</a>
-		<a href="{{ "/manage/update/" }}">Update Boat</a>
+	<div class="container">
+		<a href="{{ "/manage/add/" }}" class="manage_btn">Add Boat</a>
+		<a href="{{ "/manage/delete/" }}" class="manage_btn">Delete Boat</a>
+		<a href="{{ "/manage/update/" }}" class="manage_btn">Update Boat</a>
 	</div>
 {% endblock %}
