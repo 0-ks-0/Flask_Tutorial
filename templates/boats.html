@@ -4,9 +4,16 @@
 {% endblock %}
 
 {% block body %}
-    {% set prev_page = page - 1 %}
+    <script>
+        function set_url(page, type, value)
+        {
+            top.location = `../boats?page=${page}&search_type=${type}&search_value=${value}`
+        }
+
+    </script>
+
     <div class="column">
-        <form action="/boats/1" method="POST">
+        <form action="/boats/?page={{ page }}" method="POST">
             <select name="search_type" id="">
                 <option value="id">ID</option>
                 <option value="name">Owner Name</option>
@@ -18,25 +25,26 @@
         </form>
 
         <h3>Page {{ page }}</h3>
+        <h3>Type {{ type }}</h3>
+        <h3>Value {{ value }}</h3>
 
         <div class="pagination_bar">
             {% if page > 1 %}
-                <a href="{{ "/boats/1" }}" class="pagination_button">First</a>
-                <a href= "{{ "/boats/"+ (page - 1) | string }}" class="pagination_button"> < </a>
+                <a onclick="set_url(1, '{{ type | string }}', '{{ value | string }}')" class="pagination_button">First</a>
+                <a onclick="set_url({{ page - 1 }}, '{{ type | string }}', '{{ value | string }}')" class="pagination_button"> < </a>
             {% endif %}
 
             {% if page < max_page and page != 1  %}
-                <a href="{{ "/boats/"+ (page - 1) | string }}" class="pagination_button" > {{ page - 1 }} </a>
+                <a onclick="set_url({{ page - 1 }}, '{{ type | string }}', '{{ value | string }}')" class="pagination_button" > {{ page - 1 }} </a>
             {% endif %}
 
             <a class="pagination_button current_pag_btn"> {{page}} </a>
 
             {% if page < max_page  %}
-                <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> {{ page + 1 }} </a>
-                <a href="{{ "/boats/"+ (page + 1) | string }}" class="pagination_button"> > </a>
-                <a href="{{ "/boats/" + max_page | string }}" class="pagination_button">Last</a>
+                <a onclick="set_url({{ page + 1 }}, '{{ type | string }}', '{{ value | string }}')" class="pagination_button"> {{ page + 1 }} </a>
+                <a onclick="set_url({{ page + 1 }}, '{{ type | string }}', '{{ value | string }}')" class="pagination_button"> > </a>
+                <a onclick="set_url({{ max_page }}, '{{ type | string }}', '{{ value | string }}')" class="pagination_button">Last</a>
              {% endif %}
-
         </div>
 
         <div class="grid">

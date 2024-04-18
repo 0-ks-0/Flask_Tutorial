@@ -13,24 +13,40 @@ def index():
 	return render_template("index.html")
 
 # View boats and search
-@app.route("/boats/", methods=["GET"])
-@app.route("/boats/<page>", methods=["GET", "POST"])
-def get_boats(page = 1):
-	page = 1 if int(page) < 1 else int(page)
+@app.route("/boats/", methods=["GET", "POST"])
+def get_boats():
+	page = request.args.get("page")
+
+	if not page:
+		page = 1
+	elif int(page) < 1:
+		page = 1
+	else:
+		page = int(page)
+
 	per_page = 10  # num of records to show per page
-	max_page = 0
+
+	max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
+
 	boats = None
 
 	if request.method == "POST":
-		type = request.form["search_type"]
-		value = request.form["search_value"]
+		type = request.form.get("search_type")
+		value = request.form.get("search_value")
 
-		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
-
+		# Returning back to all the boats
 		if not value:
 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
 
-			return render_template("boats.html", boats = boats, page = page, per_page = per_page, max_page = max_page)
+			return render_template(
+				"boats.html",
+				boats = boats,
+				page = page,
+				per_page = per_page,
+				max_page = max_page,
+				type = type,
+				value = ""
+			)
 
 		value = int(value) if value.isnumeric() else f"'{value}'"
 
@@ -38,10 +54,85 @@ def get_boats(page = 1):
 
 		boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
 
+	# GET
 	else:
-		boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+		type = request.args.get("search_type")
+		value = request.args.get("search_value")
 
-	return render_template("boats.html", boats = boats, page = page, per_page = per_page, max_page = max_page)
+		# '/boats/
+		if not type and not value:
+			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+
+			value = ""
+
+		# With search parameters
+		else:
+			value = int(value) if value.isnumeric() else f"'{value}'"
+
+			max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
+
+			boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+
+
+	return render_template(
+		"boats.html",
+		boats = boats,
+		page = page,
+		per_page = per_page,
+		max_page = max_page,
+		type = type,
+		value = value[1:-1]
+	)
+
+
+# @app.route("/boats/")
+# def get_boats():
+# 	page = 1 if int(page) < 1 else int(page)
+# 	per_page = 10  # num of records to show per page
+# 	max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats")).first()[0])
+# 	boats = None
+
+# 	if request.method == "POST":
+# 		type = request.form.get("search_type")
+# 		value = request.form.get("search_value")
+
+# 		# Returning back to all the boats
+# 		if not value:
+# 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+
+# 			return render_template(
+# 				"boats.html",
+# 				boats = boats,
+# 				page = page,
+# 				per_page = per_page,
+# 				max_page = max_page,
+# 				type = type,
+# 				value = ""
+# 			)
+
+# 		value = int(value) if value.isnumeric() else f"'{value}'"
+
+# 		max_page = ceil(conn.execute(text(f"select count(*) / {per_page} from boats where {type} = {value}")).first()[0])
+
+# 		boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+
+# 	else:
+# 		print("akljfhkdjfhasdjkhlfd")
+# 		print(type, value)
+# 		if not type and not value:
+# 			boats = conn.execute(text(f"select * from boats limit {per_page} offset {(page - 1) * per_page}")).all()
+# 		else:
+# 			boats = conn.execute(text(f"select * from boats where {type} = {value} limit {per_page} offset {(page - 1) * per_page}")).all()
+
+# 	return render_template(
+# 		"boats.html",
+# 		boats = boats,
+# 		page = page,
+# 		per_page = per_page,
+# 		max_page = max_page,
+# 		type = type,
+# 		value = value[1:-1]
+# 	)
 
 # View data for boat
 @app.route("/boats/view/<id>", methods=["GET"])
